@@ -14,7 +14,7 @@ $(document).ready(function(){
 		$('section article:eq(2)').show();
 	})
 
-    
+   	$('.alert').hide();
 
     $('#salesReport').dataTable( {
         "processing": true,
@@ -44,10 +44,14 @@ $(document).ready(function(){
 	//-------trigger on upkey (price verifier)--------
 	$('#searchData').keyup(function() {
 		//search any data related with
-		cleanTable();
 		searchData();
 	});
-
+	/*
+	$('#searchData').keypress(function() {
+		//search any data related with
+		cleanTable();
+	});	
+	*/
 	//-------save sold items-----------
 	$('#saveSale').on('click', function(){
 		saveSoldItems();
@@ -116,18 +120,41 @@ $(document).ready(function(){
 		var precio = parseFloat(value[1]);
 
 		$("input#editDescription").val(descr);
-		$("input#editPrice").val("$ "+precio.toFixed(2));
+		$("input#editPrice").val(precio.toFixed(2));
 		$.ajax({
 			url: 'search.php',
 			type: 'get',
 			data: {description: descr, price: precio},
 			success: function(response) {
 				//$('table#salesTable tbody').html(response);
-				id = (response);
-				$("input#editCode").val(response);
+				var arr = (response).split("-");
+				id = arr[0];
+				$("input#editCode").val(arr[1]);
 			}
 		});
-		
+	});
+
+	//--------Save changes of product (modal)---------
+	$('#saveChanges').on('click', function(){
+		console.log(id);
+		var description = $('#editDescription').val();
+		var price = $('#editPrice').val();
+		var code = $('#editCode').val();
+		console.log(description);
+		console.log(price);
+		console.log(code);
+		$('#saveSuccess').show();
+		setTimeout(hideAlerts, 3000);
+		searchData();
+	});
+
+	//--------Delete product--------
+	$('#deleteProduct').on('click', function(){
+		console.log(id);
+		$('#myModal').modal('hide');
+		$('#myModalSuccess').modal('show');
+		$('#deleteSuccess').show();
+		searchData();
 	});
 
 	//-----calculate change on enter---------
@@ -141,8 +168,30 @@ $(document).ready(function(){
 	        $(this).trigger("enterKey");
 	    }
 	});
+
+	//------register new product---------
+	$('#registerItem').on('click', function(){
+		$('#myModalRegister').modal('show');
+	});
+
+	//-----save new product----------
+	$('#saveNewProduct').on('click', function(){
+		var description = $('#registerDescription').val();
+		var price = $('#registerPrice').val();
+		var code = $('#registerCode').val();
+		console.log(description);
+		console.log(price);
+		console.log(code);
+		$('#myModalRegister').modal('hide');
+		$('#myModalRegisterSuccess').modal('show');
+		$('#registerSuccess').show();
+		searchData();
+	});
 });
 
+function hideAlerts(){
+	$('.alert').hide();
+}
 
 function makeAjaxRequest() {
 	var barCode = $('input#barcode').val();
@@ -251,7 +300,7 @@ function searchData(){
 			data: {keyword: $('#searchData').val()},
 			success: function(response) {
 				//$('table#salesTable tbody').html(response);
-				$('#searchTable tbody').append(response);
+				$('#searchTable tbody').html(response);
 			}
 		});
 }

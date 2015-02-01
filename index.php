@@ -62,12 +62,15 @@
 	  								<input id="newquantity" class="form-control" type="number" placeholder="Cantidad">
 	  							</div>
 	  							<div class="col-xs-4">
+
 		  							<div class="input-group"><!-- input-group -->
+		  								<span class="input-group-addon">$</span>
 		  								<input id="newprice" class="form-control" type="text" placeholder="Precio">
 								      	<span class="input-group-btn">
 								        	<button class="btn btn-success" id="saveItemBtn" type="button">Agregar</button>
 								      	</span>
-								    </div><!-- /input-group -->
+								    </div>					<!-- /input-group -->
+
 								</div>
 	  						</div>
 
@@ -146,6 +149,9 @@
 				                </div>
 				            </div>
 			        	</div>
+			        	<div class="col-md-3">
+			        		<button id="registerItem" type="button" class="btn btn-primary">Registrar producto</button>
+			        	</div>
 		    		</div>
 		    		<div class="row col-md-6">
 			    		<table id="searchTable" class="table table-striped" cellspacing="1" width="60%">
@@ -159,7 +165,54 @@
 							<tbody></tbody>
 						</table>
 					</div>
-					<!-- Modal -->
+
+					<!-- .... Modal for register new product ...... -->
+					<div class="modal fade" id="myModalRegister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+        							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        							<h4 class="modal-title">Registrar producto</h4>
+      							</div>
+      							<div class="modal-body">
+      								<div class="row spaced">
+      									<div class="col-xs-2">
+      										<p>Descripción:</p>
+      									</div>
+      									<div class="col-xs-6">
+      										<input class="form-control" id="registerDescription">
+      									</div>
+      								</div>
+      								<div class="row spaced">
+      									<div class="col-xs-2">
+      										<p>Precio:</p>
+      									</div>
+      									<div class="col-xs-6">
+      										<div class="input-group">
+											  	<span class="input-group-addon">$</span>
+											  	<input type="text" class="form-control" id="registerPrice">
+											</div>
+      									</div>
+      								</div>
+      								<div class="row spaced">
+      									<div class="col-xs-2">
+      										<p>Código:</p>
+      									</div>
+      									<div class="col-xs-6">
+      										<input class="form-control" id="registerCode">
+      									</div>
+      								</div>
+      							</div>
+      							<div class="modal-footer">
+        							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        							<button type="button" class="btn btn-success" id="saveNewProduct">Guardar</button>
+      							</div>
+      							
+							</div>
+						</div>
+					</div>
+
+					<!-- .... Modal for edit product ...... -->
 					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
@@ -181,7 +234,10 @@
       										<p>Precio:</p>
       									</div>
       									<div class="col-xs-6">
-      										<input class="form-control" id="editPrice">
+      										<div class="input-group">
+											  	<span class="input-group-addon">$</span>
+											  	<input type="text" class="form-control" id="editPrice">
+											</div>
       									</div>
       								</div>
       								<div class="row spaced">
@@ -192,19 +248,61 @@
       										<input class="form-control" id="editCode">
       									</div>
       								</div>
+      								<div class="alert alert-success" role="alert" id="saveSuccess">
+      									Los cambios se han guardado con <strong>éxito.</strong>
+	      							</div>
       							</div>
       							<div class="modal-footer">
-        							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        							<button type="button" class="btn btn-success">Guardar cambios</button>
-        							<button type="button" class="btn btn-danger">Borrar producto</button>
+        							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        							<button type="button" class="btn btn-success" id="saveChanges">Guardar cambios</button>
+        							<button type="button" class="btn btn-danger" id="deleteProduct">Borrar producto</button>
       							</div>
+      							
 							</div>
 						</div>
 					</div>
 
-		    		<div id="result">
+					<!-- Modal for register success -->
+					<div class="modal fade" id="myModalRegisterSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+        							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        							<h4 class="modal-title">Registrar producto</h4>
+      							</div>
+      							<div class="modal-body">
+      								<div class="alert alert-info alert-dismissable" role="alert" id="registerSuccess">
+      									Nuevo producto <strong>registrado.</strong>
+	      							</div>
+      							</div>
+      							<div class="modal-footer">
+        							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        						</div>
+							</div>
+						</div>
+					</div>
 
-		    		</div>
+					<!-- Modal for delete success -->
+					<div class="modal fade" id="myModalSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+        							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        							<h4 class="modal-title">Editar producto</h4>
+      							</div>
+      							<div class="modal-body">
+      								<div class="alert alert-danger alert-dismissable" role="alert" id="deleteSuccess">
+      									El producto ha sido <strong>eliminado.</strong>
+	      							</div>
+      							</div>
+      							<div class="modal-footer">
+        							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        						</div>
+							</div>
+						</div>
+					</div>
+
+		    		
 
 				</article>
 				<article id="reports">

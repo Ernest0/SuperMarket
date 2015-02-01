@@ -67,7 +67,7 @@ if (isset($_GET['description'])){
     if (mysqli_num_rows($result) > 0) {
         // output data of each row
         while($row = mysqli_fetch_assoc($result)) {
-            echo "" . $row["barcode"];
+            echo $row["id"]."-".$row["barcode"];
         }
     } else {
         echo "No item found";
