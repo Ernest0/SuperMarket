@@ -3,8 +3,8 @@ require_once 'config.php';
 $conn = dbConnect();
 $conni = dbmsqli();
 if (isset($_GET['barCode'])) {
-    $data = "%".$_GET['barCode']."%";
-    $sql = 'SELECT * FROM products WHERE barcode like ?';
+    $data = $_GET['barCode'];
+    $sql = "SELECT * FROM products WHERE barcode = '$data'";
     $stmt = $conn->prepare($sql);
     $results = $stmt->execute(array($data));
     $rows = $stmt->fetchAll();
@@ -42,7 +42,7 @@ if (isset($_GET['keyword'])){
         if(empty($rows)){
             echo "<tr>";
                 //echo "<td><button type='button' class='btn btn-link btn-xs' id='removeButton'>Borrar</button></td>";
-                echo "<td colspan='4'>Item not registered</td>";
+                echo "<td colspan='4'>Producto no encontrado</td>";
             echo "</tr>";
         }
         else{
@@ -72,6 +72,58 @@ if (isset($_GET['description'])){
     } else {
         echo "No item found";
     }
+}
+
+//---save changes of item------
+if (isset($_GET['id'])){
+    $id = $_GET['id'];
+    $description = $_GET['newdescription'];
+    $price = $_GET['newprice'];
+    $code = $_GET['newcode'];
+
+    $sql = "UPDATE products SET description='$description', price='$price', barcode='$code' WHERE id='$id'";
+
+    if (mysqli_query($conni, $sql)) {
+        echo "Record updated successfully";
+    } else {
+        echo "Error updating record: " . mysqli_error($conni);
+    }
+
+    mysqli_close($conni);
+}
+
+//-------register new item----------
+if (isset($_GET['registerdescription'])){
+    $description = $_GET['registerdescription'];
+    $price = $_GET['registerprice'];
+    $code = $_GET['registercode'];
+
+    $sql = "INSERT INTO products (description, price, barcode)
+    VALUES ('$description', '$price', '$code')";
+
+    if (mysqli_query($conni, $sql)) {
+        echo "New record created successfully";
+    } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($conni);
+    }
+
+    mysqli_close($conni);
+}
+
+//------delete product------------
+if (isset($_GET['deleteid'])){
+    $id = $_GET['deleteid'];
+
+    // sql to delete a record
+    $sql = "DELETE FROM products WHERE id='$id'";
+
+    if (mysqli_query($conni, $sql)) {
+        echo "Record deleted successfully";
+    } else {
+        echo "Error deleting record: " . mysqli_error($conni);
+    }
+
+    mysqli_close($conni);
 }
 /*
 if (isset($_GET['getSales'])){

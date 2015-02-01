@@ -19,6 +19,9 @@
 		<script src="js/bootstrap.js"></script>
 		<script src="js/jquery.dataTables.min.js"></script>
 		<script src="js/dataTables.bootstrap.js"></script>
+
+		<script src="http://code.highcharts.com/highcharts.js"></script>
+		<script src="http://code.highcharts.com/modules/exporting.js"></script>
 	</head>
 
 	<body>
@@ -318,7 +321,7 @@
 				                <th>Código</th>
 				            </tr>
 				        </thead>
-				 
+				 		<!--
 				        <tfoot>
 				            <tr>
 				                <th>Descripción</th>
@@ -328,10 +331,10 @@
 				                <th>Código</th>
 				            </tr>
 				        </tfoot>
-
-
-
+						-->
 				    </table>
+
+				    <div id="graphContainer" style="min-width: 95%; height: 500px; margin: 0 auto"></div>
 
 
 				</article>
