@@ -19,6 +19,11 @@
 		<script src="js/bootstrap.js"></script>
 		<script src="js/jquery.dataTables.min.js"></script>
 		<script src="js/dataTables.bootstrap.js"></script>
+		<script src="js/tableExport.js"></script>
+		<script src="js/jquery.base64.js"></script>
+		<script src="js/jspdf/libs/sprintf.js"></script>
+		<script src="js/jspdf/jspdf.js"></script>
+		<script src="js/jspdf/libs/base64.js"></script>
 
 		<script src="http://code.highcharts.com/highcharts.js"></script>
 		<script src="http://code.highcharts.com/modules/exporting.js"></script>
@@ -46,11 +51,11 @@
 					<div class="control-group">
 					  <!--<label class="control-label" for="textinput">Código de barras:</label>-->
 					  	<div class="input">
-					    	<input id="barcode" name="textinput" type="text" placeholder="#Código" class="form-control" required>
-						</div>
-					  	<div class="input">
 					  		<input id="quantity" class="form-control" type="text" placeholder="Cantidad" required>
 					  	</div>
+					  	<div class="input">
+					    	<input id="barcode" name="textinput" type="text" placeholder="#Código" class="form-control" required>
+						</div>
 					</div>
 					<div class="row" id="divRow">
 						<div class="col-md-8">
@@ -311,31 +316,43 @@
 				<article id="reports">
 					<h3>Reporte de ventas</h3>
 
-					<table id="salesReport" class="table table-striped table-bordered" cellspacing="0" width="100%">
-				        <thead>
-				            <tr>
-				                <th>Descripción</th>
-				                <th>Cantidad</th>
-				                <th>Total</th>
-				                <th>Fecha</th>
-				                <th>Código</th>
-				            </tr>
-				        </thead>
-				 		<!--
-				        <tfoot>
-				            <tr>
-				                <th>Descripción</th>
-				                <th>Cantidad</th>
-				                <th>Total</th>
-				                <th>Fecha</th>
-				                <th>Código</th>
-				            </tr>
-				        </tfoot>
-						-->
-				    </table>
+					<div class="row">
+						<div class="col-md-2" style="margin-bottom: 2%">
+				        	<button id="exportExcel" type="button" class="btn btn-primary">Descargar en Excel</button>
+				        </div>
+				        <div class="col-md-2">
+				        	<button id="exportPDF" type="button" class="btn btn-primary">Ver en PDF</button>
+				        </div>
+				    </div>
 
+				    <div class="row col-md-12" style="margin-bottom: 2%">
+						<table id="salesReport" class="table table-striped table-bordered" cellspacing="0" width="100%">
+					        <thead>
+					            <tr>
+					                <th>Descripción</th>
+					                <th>Cantidad</th>
+					                <th>Total</th>
+					                <th>Fecha</th>
+					                <th>Código</th>
+					            </tr>
+					        </thead>
+					 		<!--
+					        <tfoot>
+					            <tr>
+					                <th>Descripción</th>
+					                <th>Cantidad</th>
+					                <th>Total</th>
+					                <th>Fecha</th>
+					                <th>Código</th>
+					            </tr>
+					        </tfoot>
+							-->
+					    </table>
+
+					</div>
+				    <!--
 				    <div id="graphContainer" style="min-width: 95%; height: 500px; margin: 0 auto"></div>
-
+					-->
 
 				</article>
 			</section>

@@ -26,8 +26,8 @@ $(document).ready(function(){
 	$('.input').bind("enterKey",function(e){
 	   //do stuff here
 	   makeAjaxRequest();
-	   setTimeout(calculateTotal, 100);
-	   setTimeout(calculateChange, 100);
+	   setTimeout(calculateTotal, 400);
+	   setTimeout(calculateChange, 400);
 	   $('input#quantity').val('');
 	   $('input#barcode').val('');
 	   $('input#barcode').focus();
@@ -202,7 +202,31 @@ $(document).ready(function(){
 
 	//------register new product---------
 	$('#registerItem').on('click', function(){
+		$('#registerDescription').val('');
+		$('#registerPrice').val('');
+		$('#registerCode').val('');
 		$('#myModalRegister').modal('show');
+	});
+
+	//-------export to excel-------------
+	$('#exportExcel').on('click', function(){
+		$('#salesReport').tableExport({
+			type:'excel',
+			escape:'false',
+			tableName:'reporte de ventas'
+		});
+	});
+
+	//--------export to PDF----------
+	$('#exportPDF').on('click', function(){
+		$('#salesReport').tableExport({
+			type:'pdf',
+			escape:'false',
+			tableName:'reporte de ventas',
+			pdfFontSize:9,
+			pdfLeftMargin:20,
+			htmlContent:'true'
+		});
 	});
 
 	//-----save new product----------
@@ -314,6 +338,10 @@ function makeAjaxRequest() {
 		alert("ingresa el codigo de barras");
 	}
 	else{
+		if (barCode[0] == '0'){
+			arrtemp = barCode.split("0");
+			barCode = arrtemp[1];
+		}
 		var quantity = $('input#quantity').val();
 		if (quantity == ''){
 			quantity = 1;
@@ -409,10 +437,15 @@ function clearAll(){
 }
 
 function searchData(){
+	var keyword = $('#searchData').val();
+	if (keyword[0] == '0'){
+		arrtemp = keyword.split("0");
+		keyword = arrtemp[1];
+	}
 	$.ajax({
 			url: 'search.php',
 			type: 'get',
-			data: {keyword: $('#searchData').val()},
+			data: {keyword: keyword},
 			success: function(response) {
 				//$('table#salesTable tbody').html(response);
 				$('#searchTable tbody').html(response);
